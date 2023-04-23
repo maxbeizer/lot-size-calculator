@@ -6,11 +6,13 @@ export class State {
   accountBalance: number;
   lotSize: number;
   pair: string;
+  riskPercentage: number;
 
   constructor() {
     this.accountBalance = 0;
     this.lotSize = 0;
     this.pair = "";
+    this.riskPercentage = 0;
   }
 }
 
@@ -109,25 +111,32 @@ function App(app: IApp) {
     console.log(state);
   };
 
-  const handleNumberInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseInt(event.target.value, 10);
+  const handleNumberInput = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    field: string
+  ) => {
+    const newValue = Number(parseFloat(event.target.value).toFixed(2));
+
     if (!isNaN(newValue)) {
-      state.accountBalance = newValue;
-      setState((prevState) => {
-        return {
-          ...prevState,
-          state: state,
-        };
-      });
+      if (field === "accountBalance") {
+        state.accountBalance = newValue;
+      } else {
+        state.riskPercentage = newValue;
+      }
     } else {
-      state.accountBalance = 0;
-      setState((prevState) => {
-        return {
-          ...prevState,
-          state: state,
-        };
-      });
+      if (field === "accountBalance") {
+        state.accountBalance = 0;
+      } else {
+        state.riskPercentage = 0;
+      }
     }
+
+    setState((prevState) => {
+      return {
+        ...prevState,
+        state: state,
+      };
+    });
   };
 
   return (
@@ -140,8 +149,30 @@ function App(app: IApp) {
         <label>Account Value: </label>
         <input
           type="number"
+          step="0.1"
+          min="0"
           value={state.accountBalance}
-          onInput={handleNumberInput}
+          onInput={(e) =>
+            handleNumberInput(
+              e as React.ChangeEvent<HTMLInputElement>,
+              "accountBalance"
+            )
+          }
+        />
+      </section>
+      <section>
+        <label>Risk Percentage: </label>
+        <input
+          type="number"
+          step="0.01"
+          min="0"
+          value={state.riskPercentage}
+          onInput={(e) =>
+            handleNumberInput(
+              e as React.ChangeEvent<HTMLInputElement>,
+              "riskPercentage"
+            )
+          }
         />
       </section>
       <section>Lot size: {state.lotSize}</section>
