@@ -8,6 +8,7 @@ export class State {
   pair: string;
   riskPercentage: number;
   baseCurrency: string;
+  stopLoss: number;
 
   constructor() {
     this.accountBalance = 0;
@@ -15,6 +16,7 @@ export class State {
     this.pair = "";
     this.riskPercentage = 0;
     this.baseCurrency = "";
+    this.stopLoss = 0;
   }
 }
 
@@ -99,6 +101,19 @@ class TypeAheadDropDown extends React.Component {
   }
 }
 
+const calculate = (state: State): State => {
+  console.log("state was: ", state);
+  /*
+   * dollar_amount_to_risk = balance * (risk_percentage/100)
+   * value_per_pip = dollar_amount_to_risk / stop_loss
+   * units = value_per_pip * pip_value_ratio
+   *
+   */
+
+  console.log("state is: ", state);
+  return state;
+};
+
 function App(app: IApp) {
   const [state, setState] = useState(app.appState);
 
@@ -109,10 +124,11 @@ function App(app: IApp) {
       state.baseCurrency = newValue;
     }
 
+    const calculated = calculate(state);
     setState((prevState) => {
       return {
         ...prevState,
-        state: state,
+        state: calculated,
       };
     });
   };
@@ -126,21 +142,26 @@ function App(app: IApp) {
     if (!isNaN(newValue)) {
       if (field === "accountBalance") {
         state.accountBalance = newValue;
+      } else if (field === "stopLoss") {
+        state.stopLoss = newValue;
       } else {
         state.riskPercentage = newValue;
       }
     } else {
       if (field === "accountBalance") {
         state.accountBalance = 0;
+      } else if (field === "stopLoss") {
+        state.stopLoss = 0;
       } else {
         state.riskPercentage = 0;
       }
     }
 
+    const calculated = calculate(state);
     setState((prevState) => {
       return {
         ...prevState,
-        state: state,
+        state: calculated,
       };
     });
   };
@@ -187,6 +208,21 @@ function App(app: IApp) {
             handleNumberInput(
               e as React.ChangeEvent<HTMLInputElement>,
               "riskPercentage"
+            )
+          }
+        />
+      </section>
+      <section>
+        <label>Stop Loss (pips): </label>
+        <input
+          type="number"
+          step="0.01"
+          min="0"
+          value={state.stopLoss}
+          onInput={(e) =>
+            handleNumberInput(
+              e as React.ChangeEvent<HTMLInputElement>,
+              "stopLoss"
             )
           }
         />
