@@ -1,4 +1,4 @@
-const pairs = [
+const PAIRS = [
   "AUDCAD",
   "AUDCHF",
   "AUDJPY",
@@ -30,4 +30,18 @@ const pairs = [
   "USDJPY"
 ]
 
-export default pairs
+const BASE_CURRENCIES = [
+  'USD',
+  'EUR',
+  'JPY',
+  'GBP',
+  'CHF',
+  'AUD',
+  'NZD',
+  'CAD',
+  ]
+  
+export {
+  PAIRS,
+  BASE_CURRENCIES
+}

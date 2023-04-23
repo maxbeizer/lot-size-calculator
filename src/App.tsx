@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import "./App.css";
-import PAIRS from "./pairs";
+import { PAIRS, BASE_CURRENCIES } from "./constants";
 
 export class State {
   accountBalance: number;
   lotSize: number;
   pair: string;
   riskPercentage: number;
+  baseCurrency: string;
 
   constructor() {
     this.accountBalance = 0;
     this.lotSize = 0;
     this.pair = "";
     this.riskPercentage = 0;
+    this.baseCurrency = "";
   }
 }
 
@@ -100,15 +102,19 @@ class TypeAheadDropDown extends React.Component {
 function App(app: IApp) {
   const [state, setState] = useState(app.appState);
 
-  const handleSelect = (newValue: string) => {
-    state.pair = newValue;
+  const handleSelect = (newValue: string, field: string) => {
+    if (field === "pair") {
+      state.pair = newValue;
+    } else {
+      state.baseCurrency = newValue;
+    }
+
     setState((prevState) => {
       return {
         ...prevState,
         state: state,
       };
     });
-    console.log(state);
   };
 
   const handleNumberInput = (
@@ -142,8 +148,18 @@ function App(app: IApp) {
   return (
     <div className="App">
       <section>
+        <label>Base Currency: </label>
+        <TypeAheadDropDown
+          items={BASE_CURRENCIES}
+          onSelect={(e) => handleSelect(e, "baseCurrency")}
+        />
+      </section>
+      <section>
         <label>Pair: </label>
-        <TypeAheadDropDown items={PAIRS} onSelect={handleSelect} />
+        <TypeAheadDropDown
+          items={PAIRS}
+          onSelect={(e) => handleSelect(e, "pair")}
+        />
       </section>
       <section>
         <label>Account Value: </label>
