@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import PAIRS from "./pairs";
 
 export class State {
   accountBalance: number;
@@ -133,7 +134,7 @@ function App(app: IApp) {
     <div className="App">
       <section>
         <label>Pair: </label>
-        <TypeAheadDropDown items={["GBPUSD"]} onSelect={handleSelect} />
+        <TypeAheadDropDown items={PAIRS} onSelect={handleSelect} />
       </section>
       <section>
         <label>Account Value: </label>
