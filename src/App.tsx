@@ -1,24 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import { PAIRS, BASE_CURRENCIES } from "./constants";
-
-export class State {
-  accountBalance: number;
-  lotSize: number;
-  pair: string;
-  riskPercentage: number;
-  baseCurrency: string;
-  stopLoss: number;
-
-  constructor() {
-    this.accountBalance = 0;
-    this.lotSize = 0;
-    this.pair = "";
-    this.riskPercentage = 0;
-    this.baseCurrency = "";
-    this.stopLoss = 0;
-  }
-}
+import { State, calculate } from "./State";
 
 interface IApp {
   appState: State;
@@ -100,19 +83,6 @@ class TypeAheadDropDown extends React.Component {
     );
   }
 }
-
-const calculate = (state: State): State => {
-  console.log("state was: ", state);
-  /*
-   * dollar_amount_to_risk = balance * (risk_percentage/100)
-   * value_per_pip = dollar_amount_to_risk / stop_loss
-   * units = value_per_pip * pip_value_ratio
-   *
-   */
-
-  console.log("state is: ", state);
-  return state;
-};
 
 function App(app: IApp) {
   const [state, setState] = useState(app.appState);
