@@ -23,11 +23,34 @@ export class State {
  *
  */
 export const calculate = (state: State): State => {
-  if (isAnythingUnset(state)) return state;
+  if (isAnythingUnset(state)) {
+    state.lotSize = 0;
+    return state;
+  }
+  const { accountBalance, baseCurrency, pair, riskPercentage, stopLoss } =
+    state;
+  const dollarAmountToRisk = (accountBalance * riskPercentage) / 100;
+  const valuePerPip = dollarAmountToRisk / stopLoss;
+  const units = valuePerPip * pipValueRatio({ baseCurrency, pair });
+
+  state.lotSize = units;
   return state;
 };
 
-const isAnythingUnset = (state: State): State => {
-  state.lotSize = 0;
-  return state;
+const isAnythingUnset = (state: State): boolean => {
+  return (
+    state.accountBalance === 0 ||
+    state.baseCurrency === "" ||
+    state.pair === "" ||
+    state.riskPercentage === 0 ||
+    state.stopLoss === 0
+  );
+};
+
+type pipValueRatioInput = {
+  baseCurrency: string;
+  pair: string;
+};
+const pipValueRatio = (_input: pipValueRatioInput): number => {
+  return 1;
 };
