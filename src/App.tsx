@@ -91,7 +91,7 @@ class TypeAheadDropDown extends React.Component {
       <span className="TypeAheadDropDown">
         <input
           onChange={this.onTextChange}
-          placeholder="Search pairs name"
+          placeholder="Search by symbol"
           value={text}
           type="text"
         />
