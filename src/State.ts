@@ -6,13 +6,22 @@ export class State {
   riskPercentage: number;
   stopLoss: number;
 
-  constructor() {
-    this.accountBalance = 0;
-    this.baseCurrency = "";
-    this.lotSize = 0;
-    this.pair = "";
-    this.riskPercentage = 0;
-    this.stopLoss = 0;
+  // TODO: add properties for current ask prices for all the pairs and store them
+  // on the state object with some sort of TTL?
+  constructor({
+    accountBalance = 0,
+    baseCurrency = "",
+    lotSize = 0,
+    pair = "",
+    riskPercentage = 0,
+    stopLoss = 0,
+  } = {}) {
+    this.accountBalance = accountBalance;
+    this.baseCurrency = baseCurrency;
+    this.lotSize = lotSize;
+    this.pair = pair;
+    this.riskPercentage = riskPercentage;
+    this.stopLoss = stopLoss;
   }
 }
 
@@ -52,5 +61,7 @@ type pipValueRatioInput = {
   pair: string;
 };
 const pipValueRatio = (_input: pipValueRatioInput): number => {
+  // TODO: calculate the pip value ratio based on the current ask price of the pair and the
+  // base currency
   return 1;
 };
