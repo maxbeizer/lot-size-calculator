@@ -1,3 +1,4 @@
+const EXCHANGE_RATE_URL = "https://api.exchangerate.host/latest";
 export class State {
   accountBalance: number;
   baseCurrency: string;
@@ -32,6 +33,7 @@ export class State {
  *
  */
 export const calculate = (state: State): State => {
+  fetchExchangeRates({ baseCurrency: state.baseCurrency, pair: state.pair });
   if (isAnythingUnset(state)) {
     state.lotSize = 0;
     return state;
@@ -64,4 +66,28 @@ const pipValueRatio = (_input: pipValueRatioInput): number => {
   // TODO: calculate the pip value ratio based on the current ask price of the pair and the
   // base currency
   return 1;
+};
+
+const fetchExchangeRates = (input: pipValueRatioInput) => {
+  const { bottom } = splitPair(input.pair);
+  const requestURL = `${EXCHANGE_RATE_URL}?base=${input.baseCurrency}&symbols=${bottom}`;
+  const request = new XMLHttpRequest();
+  request.open("GET", requestURL);
+  request.responseType = "json";
+  request.send();
+
+  request.onload = function () {
+    const response = request.response;
+    console.log(response);
+  };
+};
+
+/*
+ * Turns GBPJPY into { top: 'GBP', bottom: 'JPY' }
+ */
+const splitPair = (pair: string) => {
+  return {
+    top: pair.substring(0, 3),
+    bottom: pair.substring(3),
+  };
 };
