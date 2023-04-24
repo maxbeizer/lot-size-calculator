@@ -168,22 +168,23 @@ function App(app: IApp) {
 
   return (
     <div className="App">
+      <h1>Lot Size Calculator</h1>
       <section>
-        <label>Base Currency: </label>
+        <label>Base Currency</label>
         <TypeAheadDropDown
           items={BASE_CURRENCIES}
           onSelect={(e) => handleSelect(e, "baseCurrency")}
         />
       </section>
       <section>
-        <label>Pair: </label>
+        <label>Pair</label>
         <TypeAheadDropDown
           items={PAIRS}
           onSelect={(e) => handleSelect(e, "pair")}
         />
       </section>
       <section>
-        <label>Account Value: </label>
+        <label>Account Value</label>
         <input
           type="number"
           step="0.1"
@@ -198,7 +199,7 @@ function App(app: IApp) {
         />
       </section>
       <section>
-        <label>Risk Percentage: </label>
+        <label>Risk Percentage</label>
         <input
           type="number"
           step="0.01"
@@ -213,7 +214,7 @@ function App(app: IApp) {
         />
       </section>
       <section>
-        <label>Stop Loss (pips): </label>
+        <label>Stop Loss (pips)</label>
         <input
           type="number"
           step="0.01"
