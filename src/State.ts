@@ -33,7 +33,10 @@ export class State {
  *
  */
 export const calculate = (state: State): State => {
-  fetchExchangeRates({ baseCurrency: state.baseCurrency, pair: state.pair });
+  fetchExchangeRates(
+    { baseCurrency: state.baseCurrency, pair: state.pair },
+    state
+  );
   if (isAnythingUnset(state)) {
     state.lotSize = 0;
     return state;
@@ -68,9 +71,10 @@ const pipValueRatio = (_input: pipValueRatioInput): number => {
   return 1;
 };
 
-const fetchExchangeRates = (input: pipValueRatioInput) => {
-  const { bottom } = splitPair(input.pair);
-  const requestURL = `${EXCHANGE_RATE_URL}?base=${input.baseCurrency}&symbols=${bottom}`;
+const fetchExchangeRates = (input: pipValueRatioInput, state: State) => {
+  const { top, bottom } = splitPair(input.pair);
+  const symbols = `${top},${bottom}`;
+  const requestURL = `${EXCHANGE_RATE_URL}?base=${input.baseCurrency}&symbols=${symbols}`;
   const request = new XMLHttpRequest();
   request.open("GET", requestURL);
   request.responseType = "json";
@@ -78,7 +82,12 @@ const fetchExchangeRates = (input: pipValueRatioInput) => {
 
   request.onload = function () {
     const response = request.response;
-    console.log(response);
+    const { success, rates } = response;
+    if (success) {
+      console.log("rates", rates, requestURL)
+    } else {
+      console.error("error fetching exchange rates", response);
+    }
   };
 };
 
