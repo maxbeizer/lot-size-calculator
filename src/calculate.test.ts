@@ -77,26 +77,26 @@ const testCases: Array<TestCase> = [
     pipValue: 10,
     lotSize: 1,
   },
-//   {
-//     name: "Base JPY: GBP/CHF",
-//     accountBalance: 10000,
-//     riskPercentage: 1,
-//     stopLossPips: 10,
-//     baseCurrency: "JPY",
-//     quoteCurrency: "CHF",
-//     askPrice: 1.1179,
-//     bidPrice: 1.1186,
-//     positionSize: 8939746.1112,
-//     pipValue: 893.97,
-//     lotSize: 89.3975,
-//   },
+  {
+    name: "Base JPY: GBP/CHF",
+    accountBalance: 10000,
+    riskPercentage: 1,
+    stopLossPips: 10,
+    baseCurrency: "JPY",
+    quoteCurrency: "CHF",
+    askPrice: 1.1179,
+    bidPrice: 1.1186,
+    positionSize: 8_939_746.1112,
+    pipValue: 893.97,
+    lotSize: 89.3975,
+  },
 ];
 
 testCases.forEach((tc) => {
   test(`${tc.name}`, () => {
     const { positionSize, pipValue, lotSize } = calculatePositionSize(tc);
-    expect(positionSize).toBe(tc.positionSize);
     expect(pipValue).toBe(tc.pipValue);
     expect(lotSize).toBe(tc.lotSize);
+    expect(positionSize).toBe(tc.positionSize);
   });
 });
