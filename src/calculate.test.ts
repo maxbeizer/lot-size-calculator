@@ -14,7 +14,7 @@ type TestCase = CalculateInput & CalculateOutput & { name: string };
 const testCases: Array<TestCase> = [
   {
     name: "Base USD: EUR/CAD",
-    accountBalance: 10000,
+    accountBalance: 10_000,
     riskPercentage: 1,
     stopLossPips: 10,
     baseCurrency: "USD",
@@ -27,7 +27,7 @@ const testCases: Array<TestCase> = [
   },
   {
     name: "Base USD: GBP/AUD",
-    accountBalance: 10000,
+    accountBalance: 10_000,
     riskPercentage: 1,
     stopLossPips: 10,
     baseCurrency: "USD",
@@ -40,7 +40,7 @@ const testCases: Array<TestCase> = [
   },
   {
     name: "Base USD: GBP/JPY",
-    accountBalance: 10000,
+    accountBalance: 10_000,
     riskPercentage: 1,
     stopLossPips: 10,
     baseCurrency: "USD",
@@ -53,7 +53,7 @@ const testCases: Array<TestCase> = [
   },
   {
     name: "Base GBP: GBP/JPY",
-    accountBalance: 10000,
+    accountBalance: 10_000,
     riskPercentage: 1,
     stopLossPips: 10,
     baseCurrency: "GBP",
@@ -66,7 +66,7 @@ const testCases: Array<TestCase> = [
   },
   {
     name: "Base JPY: GBP/JPY",
-    accountBalance: 10000,
+    accountBalance: 10_000,
     riskPercentage: 1,
     stopLossPips: 10,
     baseCurrency: "JPY",
@@ -79,7 +79,7 @@ const testCases: Array<TestCase> = [
   },
   {
     name: "Base JPY: GBP/CHF",
-    accountBalance: 10000,
+    accountBalance: 10_000,
     riskPercentage: 1,
     stopLossPips: 10,
     baseCurrency: "JPY",
