@@ -1,68 +1,77 @@
 import { PAIRS } from "./constants";
-export interface CalculateInput {
+
+type Currencies = {
+  baseCurrency: string;
+  quoteCurrency: string;
+}
+
+export type CalculateInput = {
   accountBalance: number;
   riskPercentage: number;
   stopLossPips: number;
-  baseCurrency: string;
-  quoteCurrency: string;
   bidPrice: number;
   askPrice: number;
-}
+} & Currencies;
 
-export interface CalculateOutput {
+export type CalculateOutput = {
   positionSize: number;
   pipValue: number;
   lotSize: number;
 }
 
-function calculatePositionSize(input: CalculateInput): CalculateOutput {
-  const {
-    accountBalance,
-    riskPercentage,
-    stopLossPips,
-    baseCurrency,
-    quoteCurrency,
-    bidPrice,
-    askPrice,
-  } = input;
-
-  const riskAmount = accountBalance * (riskPercentage / 100); // 100
+function calculatePositionSize({
+  accountBalance,
+  riskPercentage,
+  stopLossPips,
+  baseCurrency,
+  quoteCurrency,
+  bidPrice,
+  askPrice,
+}: CalculateInput): CalculateOutput {
+  const currencies: Currencies = { baseCurrency, quoteCurrency };
+  const riskAmount = accountBalance * (riskPercentage / 100);
   const pipValue =
     (riskAmount / stopLossPips) *
-    pipValueDenominator(bidPrice, askPrice, quoteCurrency, baseCurrency);
+    pipValueMultiplier(bidPrice, askPrice, currencies);
   const lotSize = pipValue / 10;
 
   return {
-    positionSize: +Number(lotSize * positionSizeMultiplier(quoteCurrency, baseCurrency)).toFixed(4),
+    positionSize: +Number(
+      lotSize * positionSizeMultiplier(currencies)
+    ).toFixed(4),
     pipValue: +Number(pipValue).toFixed(2),
-    lotSize: +Number(lotSize/lotSizeMultiplier(quoteCurrency)).toFixed(4),
+    lotSize: +Number(
+      lotSize / lotSizeMultiplier(currencies)
+    ).toFixed(4),
   };
 }
 
-function pipValueDenominator(
+function pipValueMultiplier(
   bidPrice: number,
   askPrice: number,
-  quoteCurrency: string,
-  baseCurrency: string
+  { quoteCurrency, baseCurrency }: Currencies
 ): number {
   if (quoteCurrency === baseCurrency) return 1;
 
-  return PAIRS.includes(`${quoteCurrency}${baseCurrency}`) ? 1/bidPrice : askPrice;
+  return PAIRS.includes(`${quoteCurrency}${baseCurrency}`)
+    ? 1 / bidPrice
+    : askPrice;
 }
 
 function positionSizeMultiplier(
-  quoteCurrency: string,
-  baseCurrency: string
+  {quoteCurrency, baseCurrency}: Currencies
 ): number {
-  if (quoteCurrency === baseCurrency) return 10000;
+  if (quoteCurrency === baseCurrency) return 100000;
 
-  return quoteCurrency === "JPY" ? 1000: 100000
+  return quoteCurrency === "JPY" ? 1000 : 100000;
 }
 
 function lotSizeMultiplier(
-  quoteCurrency: string,
+  {quoteCurrency, baseCurrency}: Currencies
 ): number {
-  return quoteCurrency === "JPY" ? 100: 1
+  if (quoteCurrency === baseCurrency) return 1;
+
+  return quoteCurrency === "JPY" ? 100 : 1;
 }
 
 export default calculatePositionSize;
