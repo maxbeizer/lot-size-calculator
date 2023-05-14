@@ -1,5 +1,5 @@
 import { PAIRS } from "./constants";
-interface Input {
+export interface CalculateInput {
   accountBalance: number;
   riskPercentage: number;
   stopLossPips: number;
@@ -9,13 +9,13 @@ interface Input {
   askPrice: number;
 }
 
-interface Output {
+export interface CalculateOutput {
   positionSize: number;
   pipValue: number;
   lotSize: number;
 }
 
-function calculatePositionSize(input: Input): Output {
+function calculatePositionSize(input: CalculateInput): CalculateOutput {
   const {
     accountBalance,
     riskPercentage,
@@ -54,7 +54,7 @@ function positionSizeMultiplier(
   quoteCurrency: string,
   baseCurrency: string
 ): number {
-  if (quoteCurrency === baseCurrency) return 1;
+  if (quoteCurrency === baseCurrency) return 10000;
 
   return quoteCurrency === "JPY" ? 1000: 100000
 }
