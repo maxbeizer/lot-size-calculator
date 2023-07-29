@@ -87,14 +87,14 @@ class TypeAheadDropDown extends React.Component {
 function App(app: IApp) {
   const [state, setState] = useState(app.appState);
 
-  const handleSelect = (newValue: string, field: string) => {
+  const handleSelect = async (newValue: string, field: string) => {
     if (field === "pair") {
       state.pair = newValue;
     } else {
       state.baseCurrency = newValue;
     }
 
-    const newState = buildState(state);
+    const newState = await buildState(state);
     setState((prevState) => {
       return {
         ...prevState,
@@ -103,7 +103,7 @@ function App(app: IApp) {
     });
   };
 
-  const handleNumberInput = (
+  const handleNumberInput = async (
     event: React.ChangeEvent<HTMLInputElement>,
     field: string
   ) => {
@@ -127,7 +127,7 @@ function App(app: IApp) {
       }
     }
 
-    const calculated = buildState(state);
+    const calculated = await buildState(state);
     setState((prevState) => {
       return {
         ...prevState,
@@ -199,6 +199,9 @@ function App(app: IApp) {
         />
       </section>
       <section>Lot size: {state.lotSize}</section>
+      {!state.isFetchError && (
+        <section className="error">Error fetching data. Sorry</section>
+      )}
     </div>
   );
 }
