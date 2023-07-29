@@ -1,5 +1,5 @@
 import { BASE_CURRENCIES } from "./constants";
-import calculatePositionSize from "./calculate";
+import calculatePositionSize, { buildCalculateInput } from "./calculate";
 
 const EXCHANGE_RATE_URL = "https://api.exchangerate.host/latest";
 export class State {
@@ -46,7 +46,7 @@ export class State {
  */
 export const buildState = (state: State): State => {
   fetchExchangeRates(state);
-  const { lotSize } = calculatePositionSize(state);
+  const { lotSize } = calculatePositionSize(buildCalculateInput(state));
 
   // TODO move this to guard this whole function
   if (isAnythingUnset(state)) {

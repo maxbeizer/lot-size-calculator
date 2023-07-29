@@ -1,4 +1,5 @@
 import { PAIRS, POSITION_SIZE_MULTIPLIER } from "./constants";
+import { State } from "./State";
 
 type Currencies = {
   baseCurrency: string;
@@ -44,6 +45,29 @@ function calculatePositionSize({
     positionSize: toFixedNumber(positionSize, 4),
     pipValue: toFixedNumber(pipValue, 2),
     lotSize: toFixedNumber(lotSize, 4),
+  };
+}
+
+// Convert between the State type and the CalculateInput type
+export function buildCalculateInput(state: State): CalculateInput {
+  const {
+    accountBalance,
+    baseCurrency,
+    quoteCurrency,
+    riskPercentage,
+    stopLossPips,
+    bidPrice,
+    askPrice,
+  } = state;
+
+  return {
+    accountBalance,
+    baseCurrency,
+    quoteCurrency,
+    riskPercentage,
+    stopLossPips,
+    bidPrice,
+    askPrice,
   };
 }
 
