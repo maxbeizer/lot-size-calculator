@@ -1,28 +1,40 @@
+import { BASE_CURRENCIES } from "./constants";
+import calculatePositionSize from "./calculate";
+
 const EXCHANGE_RATE_URL = "https://api.exchangerate.host/latest";
 export class State {
   accountBalance: number;
   baseCurrency: string;
+  quoteCurrency: string;
   lotSize: number;
   pair: string;
   riskPercentage: number;
-  stopLoss: number;
+  stopLossPips: number;
+  bidPrice: number;
+  askPrice: number;
 
   // TODO: add properties for current ask prices for all the pairs and store them
   // on the state object with some sort of TTL?
   constructor({
     accountBalance = 0,
     baseCurrency = "",
+    quoteCurrency = "",
     lotSize = 0,
     pair = "",
     riskPercentage = 0,
-    stopLoss = 0,
+    stopLossPips = 0,
+    bidPrice = 0,
+    askPrice = 0,
   } = {}) {
     this.accountBalance = accountBalance;
     this.baseCurrency = baseCurrency;
+    this.quoteCurrency = quoteCurrency;
     this.lotSize = lotSize;
     this.pair = pair;
     this.riskPercentage = riskPercentage;
-    this.stopLoss = stopLoss;
+    this.stopLossPips = stopLossPips;
+    this.bidPrice = bidPrice;
+    this.askPrice = askPrice;
   }
 }
 
@@ -32,22 +44,17 @@ export class State {
  * units = value_per_pip * pip_value_ratio
  *
  */
-export const calculate = (state: State): State => {
-  fetchExchangeRates(
-    { baseCurrency: state.baseCurrency, pair: state.pair },
-    state
-  );
+export const buildState = (state: State): State => {
+  fetchExchangeRates(state);
+  const { lotSize } = calculatePositionSize(state);
+
+  // TODO move this to guard this whole function
   if (isAnythingUnset(state)) {
     state.lotSize = 0;
     return state;
   }
-  const { accountBalance, baseCurrency, pair, riskPercentage, stopLoss } =
-    state;
-  const dollarAmountToRisk = (accountBalance * riskPercentage) / 100;
-  const valuePerPip = dollarAmountToRisk / stopLoss;
-  const units = valuePerPip * pipValueRatio({ baseCurrency, pair });
 
-  state.lotSize = units;
+  state.lotSize = lotSize;
   return state;
 };
 
@@ -57,24 +64,17 @@ const isAnythingUnset = (state: State): boolean => {
     state.baseCurrency === "" ||
     state.pair === "" ||
     state.riskPercentage === 0 ||
-    state.stopLoss === 0
+    state.stopLossPips === 0
   );
 };
 
-type pipValueRatioInput = {
-  baseCurrency: string;
-  pair: string;
-};
-const pipValueRatio = (_input: pipValueRatioInput): number => {
-  // TODO: calculate the pip value ratio based on the current ask price of the pair and the
-  // base currency
-  return 1;
-};
-
-const fetchExchangeRates = (input: pipValueRatioInput, state: State) => {
-  const { top, bottom } = splitPair(input.pair);
-  const symbols = `${top},${bottom}`;
-  const requestURL = `${EXCHANGE_RATE_URL}?base=${input.baseCurrency}&symbols=${symbols}`;
+/* TODO
+- cache this,
+- require that base currency is set
+*/
+const fetchExchangeRates = (state: State) => {
+  const symbols = BASE_CURRENCIES.join(",");
+  const requestURL = `${EXCHANGE_RATE_URL}?base=${state.baseCurrency}&symbols=${symbols}`;
   const request = new XMLHttpRequest();
   request.open("GET", requestURL);
   request.responseType = "json";
@@ -84,19 +84,9 @@ const fetchExchangeRates = (input: pipValueRatioInput, state: State) => {
     const response = request.response;
     const { success, rates } = response;
     if (success) {
-      console.log("rates", rates, requestURL)
+      console.log("rates", rates, requestURL);
     } else {
       console.error("error fetching exchange rates", response);
     }
-  };
-};
-
-/*
- * Turns GBPJPY into { top: 'GBP', bottom: 'JPY' }
- */
-const splitPair = (pair: string) => {
-  return {
-    top: pair.substring(0, 3),
-    bottom: pair.substring(3),
   };
 };

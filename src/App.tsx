@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import { PAIRS, BASE_CURRENCIES } from "./constants";
-import { State, calculate } from "./State";
+import { State, buildState } from "./State";
 
 interface IApp {
   appState: State;
@@ -94,11 +94,11 @@ function App(app: IApp) {
       state.baseCurrency = newValue;
     }
 
-    const calculated = calculate(state);
+    const newState = buildState(state);
     setState((prevState) => {
       return {
         ...prevState,
-        state: calculated,
+        state: newState,
       };
     });
   };
@@ -113,7 +113,7 @@ function App(app: IApp) {
       if (field === "accountBalance") {
         state.accountBalance = newValue;
       } else if (field === "stopLoss") {
-        state.stopLoss = newValue;
+        state.stopLossPips = newValue;
       } else {
         state.riskPercentage = newValue;
       }
@@ -121,13 +121,13 @@ function App(app: IApp) {
       if (field === "accountBalance") {
         state.accountBalance = 0;
       } else if (field === "stopLoss") {
-        state.stopLoss = 0;
+        state.stopLossPips = 0;
       } else {
         state.riskPercentage = 0;
       }
     }
 
-    const calculated = calculate(state);
+    const calculated = buildState(state);
     setState((prevState) => {
       return {
         ...prevState,
@@ -189,7 +189,7 @@ function App(app: IApp) {
           type="number"
           step="0.01"
           min="0"
-          value={state.stopLoss}
+          value={state.stopLossPips}
           onInput={(e) =>
             handleNumberInput(
               e as React.ChangeEvent<HTMLInputElement>,

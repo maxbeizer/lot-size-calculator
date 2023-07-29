@@ -27,21 +27,18 @@ const PAIRS = [
   "NZDUSD",
   "USDCAD",
   "USDCHF",
-  "USDJPY"
-]
+  "USDJPY",
+];
 
 const BASE_CURRENCIES = [
-  'USD',
-  'EUR',
-  'JPY',
-  'GBP',
-  'CHF',
-  'AUD',
-  'NZD',
-  'CAD',
-  ]
-  
-export {
-  PAIRS,
-  BASE_CURRENCIES
-}
+  "AUD",
+  "CAD",
+  "CHF",
+  "EUR",
+  "GBP",
+  "JPY",
+  "NZD",
+  "USD",
+];
+
+export { PAIRS, BASE_CURRENCIES };
