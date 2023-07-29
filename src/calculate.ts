@@ -1,4 +1,4 @@
-import { PAIRS } from "./constants";
+import { PAIRS, POSITION_SIZE_MULTIPLIER } from "./constants";
 
 type Currencies = {
   baseCurrency: string;
@@ -23,8 +23,6 @@ export type CalculateOutput = {
   lotSize: number;
 };
 
-const POSITION_SIZE_MULTIPLIER = 100_000;
-
 function calculatePositionSize({
   accountBalance,
   riskPercentage,
@@ -40,7 +38,7 @@ function calculatePositionSize({
   const riskPerPip = riskAmount / stopLossPips;
   const pipValue = riskPerPip * pipValueMultiplier(prices, currencies);
   const lotSize = pipValue * lotSizeMultiplier(currencies);
-  const positionSize = lotSize * POSITION_SIZE_MULTIPLIER
+  const positionSize = lotSize * POSITION_SIZE_MULTIPLIER;
 
   return {
     positionSize: toFixedNumber(positionSize, 4),
@@ -56,7 +54,7 @@ function pipValueMultiplier(
   if (quoteCurrency === baseCurrency) return 1;
 
   return PAIRS.includes(`${quoteCurrency}${baseCurrency}`)
-    ? 1 / bidPrice * yenMultiplier(baseCurrency)
+    ? (1 / bidPrice) * yenMultiplier(baseCurrency)
     : askPrice;
 }
 
@@ -69,7 +67,7 @@ function lotSizeMultiplier({
   baseCurrency,
 }: Currencies): number {
   if (quoteCurrency === baseCurrency) return 0.1;
-  if (baseCurrency === "JPY") return 0.1
+  if (baseCurrency === "JPY") return 0.1;
 
   return quoteCurrency === "JPY" ? 0.001 : 0.1;
 }
