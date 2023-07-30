@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useId } from "react";
 import "./App.css";
 import { PAIRS, BASE_CURRENCIES } from "./constants";
 import { State, buildState } from "./State";
@@ -7,85 +7,10 @@ interface IApp {
   appState: State;
 }
 
-interface ITypeaheadProps {
-  items: Array<string>;
-  onSelect: (value: string) => void;
-}
-interface ITypeaheadState {
-  suggestions: Array<string>;
-  text: string;
-}
-
-class TypeAheadDropDown extends React.Component {
-  state: ITypeaheadState;
-  props: ITypeaheadProps;
-
-  constructor(props: ITypeaheadProps) {
-    super(props);
-    this.props = props;
-    this.state = {
-      suggestions: [],
-      text: "",
-    } as ITypeaheadState;
-  }
-
-  onTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { items } = this.props;
-    let suggestions: Array<String> = [];
-    const value = event.target.value;
-    if (value.length > 0) {
-      const regex = new RegExp(`^${value}`, `i`);
-      suggestions = items.sort().filter((v) => regex.test(v));
-    }
-
-    this.setState(() => ({
-      suggestions,
-      text: value,
-    }));
-  };
-
-  suggestionSelected = (value: string) => {
-    this.setState(() => ({
-      text: value,
-      suggestions: [],
-    }));
-    this.props.onSelect(value);
-  };
-
-  renderSuggestions = () => {
-    const { suggestions } = this.state;
-    if (suggestions.length === 0) {
-      return null;
-    }
-    return (
-      <ul>
-        {suggestions.map((pair) => (
-          <li key={pair} onClick={() => this.suggestionSelected(pair)}>
-            {pair}
-          </li>
-        ))}
-      </ul>
-    );
-  };
-
-  render() {
-    const { text } = this.state;
-    return (
-      <span className="TypeAheadDropDown">
-        <input
-          onChange={this.onTextChange}
-          placeholder="Search by symbol"
-          value={text}
-          type="text"
-        />
-        {this.renderSuggestions()}
-      </span>
-    );
-  }
-}
-
 function App(app: IApp) {
   const [state, setState] = useState(app.appState);
+  const baseCurrencySelectId = useId();
+  const pairsSelectId = useId();
 
   const handleSelect = async (newValue: string, field: string) => {
     if (field === "pair") {
@@ -146,23 +71,55 @@ function App(app: IApp) {
     );
   };
 
+  const baseCurrencies = () => {
+    return (
+      <>
+        <label htmlFor={baseCurrencySelectId}>Base currency</label>
+        <select
+          id={baseCurrencySelectId}
+          name="selectedBaseCurrency"
+          value={state.baseCurrency}
+          onChange={(e) => handleSelect(e.target.value, "baseCurrency")}
+        >
+          {BASE_CURRENCIES.map((currency) => {
+            return (
+              <option key={currency} value={currency}>
+                {currency}
+              </option>
+            );
+          })}
+        </select>
+      </>
+    );
+  };
+
+  const pairs = () => {
+    return (
+      <>
+        <label htmlFor={pairsSelectId}>Pair</label>
+        <select
+          id={pairsSelectId}
+          name="selectedPair"
+          value={state.pair}
+          onChange={(e) => handleSelect(e.target.value, "pair")}
+        >
+          {PAIRS.map((pair) => {
+            return (
+              <option key={pair} value={pair}>
+                {pair}
+              </option>
+            );
+          })}
+        </select>
+      </>
+    );
+  };
+
   return (
     <div className="App">
       <h1>Lot Size Calculator</h1>
-      <section>
-        <label>Base Currency</label>
-        <TypeAheadDropDown
-          items={BASE_CURRENCIES}
-          onSelect={(e) => handleSelect(e, "baseCurrency")}
-        />
-      </section>
-      <section>
-        <label>Pair</label>
-        <TypeAheadDropDown
-          items={PAIRS}
-          onSelect={(e) => handleSelect(e, "pair")}
-        />
-      </section>
+      <section>{baseCurrencies()}</section>
+      <section>{pairs()}</section>
       <section>
         <label>Account Value</label>
         <input
