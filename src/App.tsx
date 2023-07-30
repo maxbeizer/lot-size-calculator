@@ -23,7 +23,7 @@ function App(app: IApp) {
     setState((prevState) => {
       return {
         ...prevState,
-        state: newState,
+        ...newState,
       };
     });
   };
@@ -56,7 +56,7 @@ function App(app: IApp) {
     setState((prevState) => {
       return {
         ...prevState,
-        state: calculated,
+        ...calculated,
       };
     });
   };
@@ -81,6 +81,7 @@ function App(app: IApp) {
           value={state.baseCurrency}
           onChange={(e) => handleSelect(e.target.value, "baseCurrency")}
         >
+          <option value="">Select a base currency</option>
           {BASE_CURRENCIES.map((currency) => {
             return (
               <option key={currency} value={currency}>
@@ -103,6 +104,7 @@ function App(app: IApp) {
           value={state.pair}
           onChange={(e) => handleSelect(e.target.value, "pair")}
         >
+          <option value="">Select a currency pair</option>
           {PAIRS.map((pair) => {
             return (
               <option key={pair} value={pair}>
