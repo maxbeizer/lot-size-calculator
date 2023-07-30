@@ -136,6 +136,16 @@ function App(app: IApp) {
     });
   };
 
+  const summarize = () => {
+    return (
+      <section>
+        {state.isFetchError
+          ? "Error fetching data. Sorry"
+          : `Standard lot size: ${state.lotSize}`}
+      </section>
+    );
+  };
+
   return (
     <div className="App">
       <h1>Lot Size Calculator</h1>
@@ -157,7 +167,7 @@ function App(app: IApp) {
         <label>Account Value</label>
         <input
           type="number"
-          step="0.1"
+          step="0.01"
           min="0"
           value={state.accountBalance}
           onInput={(e) =>
@@ -172,7 +182,7 @@ function App(app: IApp) {
         <label>Risk Percentage</label>
         <input
           type="number"
-          step="0.01"
+          step="0.1"
           min="0"
           value={state.riskPercentage}
           onInput={(e) =>
@@ -198,10 +208,7 @@ function App(app: IApp) {
           }
         />
       </section>
-      <section>Lot size: {state.lotSize}</section>
-      {!state.isFetchError && (
-        <section className="error">Error fetching data. Sorry</section>
-      )}
+      <summary>{summarize()}</summary>
     </div>
   );
 }
