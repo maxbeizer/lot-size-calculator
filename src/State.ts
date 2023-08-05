@@ -1,6 +1,11 @@
 import { BASE_CURRENCIES, EXCHANGE_RATE_URL } from "./constants";
 import calculatePositionSize, { buildCalculateInput } from "./calculate";
 
+const STANDARD_CACHE_TTL = 60; // 60 seconds
+type Rates = {
+  [key: string]: number;
+};
+
 export class State {
   accountBalance: number;
   baseCurrency: string;
@@ -71,15 +76,31 @@ const isAnythingUnset = (state: State): boolean => {
   );
 };
 
-/* TODO
-- cache this,
-- require that base currency is set
+/*
+Fetch the exchange rates for the base currency and store them in local storage
+if they are not already there and are not expired.
 */
 const fetchExchangeRates = async (state: State): Promise<State> => {
+  if (!state.baseCurrency || state.baseCurrency === "") {
+    return state;
+  }
+
   const symbols = BASE_CURRENCIES.join(",");
   const requestURL = `${EXCHANGE_RATE_URL}?base=${state.baseCurrency}&symbols=${symbols}`;
-  const res = await fetch(requestURL);
-  const { rates, success } = await res.json();
+  const cacheResult = getExchangeRatesFromCache(state.baseCurrency);
+
+  let rates = {} as Rates;
+  let success = true;
+
+  if (cacheResult) {
+    rates = cacheResult;
+  } else {
+    const res = await fetch(requestURL);
+    const resJSON = await res.json();
+    rates = resJSON.rates;
+    success = resJSON.success;
+    cacheExchangeRates(state.baseCurrency, rates, STANDARD_CACHE_TTL);
+  }
 
   if (!success) {
     state.isFetchError = true;
@@ -94,7 +115,38 @@ const fetchExchangeRates = async (state: State): Promise<State> => {
 };
 
 /*
- * Turns GBPJPY into { top: 'GBP', bottom: 'JPY' }
+Store the exchange rates in local storage, using the base currency as the key and the rates as the value
+
+- ttl is in seconds
+*/
+const cacheExchangeRates = (keyName: string, keyValue: Rates, ttl: number) => {
+  const data = {
+    value: keyValue,
+    expiry: Date.now() + ttl * 1000,
+  };
+
+  localStorage.setItem(keyName, JSON.stringify(data));
+};
+
+/*
+Get the exchange rates from local storage, if they exist and are not expired
+*/
+const getExchangeRatesFromCache = (keyName: string) => {
+  const data = localStorage.getItem(keyName);
+  if (!data) {
+    return null;
+  }
+
+  const { value, expiry } = JSON.parse(data);
+  if (Date.now() > expiry) {
+    return null;
+  }
+
+  return value;
+};
+
+/*
+Turns GBPJPY into { top: 'GBP', bottom: 'JPY' }
  */
 const splitPair = (pair: string) => {
   return {
