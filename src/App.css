@@ -2,6 +2,19 @@
   text-align: center;
 }
 
+@keyframes highlight {
+  0% {
+      background: rgb(255, 209, 44)
+  }
+  100% {
+      background: none;
+  }
+}
+
+.highlight {
+  animation: highlight 1s;
+}
+
 footer {
   text-align: center;
 }

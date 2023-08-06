@@ -65,7 +65,7 @@ function App(app: IApp) {
     const isCopyDisabled = state.isFetchError || state.lotSize === 0;
     return (
       <section>
-        <span>
+        <span id="summary-text">
           {state.isFetchError
             ? "Error fetching data. Sorry"
             : `Standard lot size: ${state.lotSize}`}
@@ -82,6 +82,7 @@ function App(app: IApp) {
             aria-disabled={isCopyDisabled}
             onClick={updateClipboard}
             style={{ width: "25%" }}
+            className="contrast"
           >
             copy
           </button>
@@ -92,7 +93,12 @@ function App(app: IApp) {
 
   const updateClipboard = (e: SyntheticEvent) => {
     e.preventDefault();
+    const textNode = document.getElementById("summary-text");
+    textNode?.classList.add("highlight");
     navigator.clipboard.writeText(`${state.lotSize}`);
+    setTimeout(() => {
+      textNode?.classList.remove("highlight");
+    }, 1000); // Let the aniation play out
   };
 
   const baseCurrencies = () => {
