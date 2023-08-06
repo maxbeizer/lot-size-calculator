@@ -12,6 +12,18 @@ script/test
 script/dev # or npm run
 ```
 
+## Deployment
+
+via [GitHub Pages](https://pages.github.com/):
+
+```
+script/deploy
+# or
+npm run deploy
+```
+
+docs: https://create-react-app.dev/docs/deployment#github-pages
+
 ## Understanding the algorithm
 
 ```
