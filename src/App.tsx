@@ -147,49 +147,55 @@ function App(app: IApp) {
       <section>{baseCurrencies()}</section>
       <section>{pairs()}</section>
       <section>
-        <label>Account Value</label>
-        <input
-          type="number"
-          step="0.01"
-          min="0"
-          value={state.accountBalance}
-          onInput={(e) =>
-            handleNumberInput(
-              e as React.ChangeEvent<HTMLInputElement>,
-              "accountBalance"
-            )
-          }
-        />
+        <label>
+          Account Value
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            value={state.accountBalance}
+            onInput={(e) =>
+              handleNumberInput(
+                e as React.ChangeEvent<HTMLInputElement>,
+                "accountBalance"
+              )
+            }
+          />
+        </label>
       </section>
       <section>
-        <label>Risk Percentage</label>
-        <input
-          type="number"
-          step="0.1"
-          min="0"
-          value={state.riskPercentage}
-          onInput={(e) =>
-            handleNumberInput(
-              e as React.ChangeEvent<HTMLInputElement>,
-              "riskPercentage"
-            )
-          }
-        />
+        <label>
+          Risk Percentage
+          <input
+            type="number"
+            step="0.1"
+            min="0"
+            value={state.riskPercentage}
+            onInput={(e) =>
+              handleNumberInput(
+                e as React.ChangeEvent<HTMLInputElement>,
+                "riskPercentage"
+              )
+            }
+          />
+        </label>
       </section>
       <section>
-        <label>Stop Loss (pips)</label>
-        <input
-          type="number"
-          step="0.01"
-          min="0"
-          value={state.stopLossPips}
-          onInput={(e) =>
-            handleNumberInput(
-              e as React.ChangeEvent<HTMLInputElement>,
-              "stopLoss"
-            )
-          }
-        />
+        <label>
+          Stop Loss (pips)
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            value={state.stopLossPips}
+            onInput={(e) =>
+              handleNumberInput(
+                e as React.ChangeEvent<HTMLInputElement>,
+                "stopLoss"
+              )
+            }
+          />
+        </label>
       </section>
       <summary>{summarize()}</summary>
     </div>
