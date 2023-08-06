@@ -2,28 +2,6 @@
   text-align: center;
 }
 
-.TypeAheadDropDown ul::before{
-  content: '';
- }
-  
- .TypeAheadDropDown ul{
- list-style-type: none;
- /* text-align: left; */
- margin: 0;
- padding: 0;
- border-top: 1px solid gray;
- }
-  
- .TypeAheadDropDown li{
-  padding: 10px 5px ;
-  cursor: pointer;
- }
-  
- .TypeAheadDropDown li:hover{
-  background: lightgray;
-  text-decoration: underline;
- }
-
- footer {
+footer {
   text-align: center;
- }
+}

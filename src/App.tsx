@@ -1,4 +1,4 @@
-import React, { useState, useId } from "react";
+import React, { useState, useId, SyntheticEvent } from "react";
 import "./App.css";
 import { PAIRS, BASE_CURRENCIES } from "./constants";
 import { State, buildState } from "./State";
@@ -62,13 +62,37 @@ function App(app: IApp) {
   };
 
   const summarize = () => {
+    const isCopyDisabled = state.isFetchError || state.lotSize === 0;
     return (
       <section>
-        {state.isFetchError
-          ? "Error fetching data. Sorry"
-          : `Standard lot size: ${state.lotSize}`}
+        <span>
+          {state.isFetchError
+            ? "Error fetching data. Sorry"
+            : `Standard lot size: ${state.lotSize}`}
+        </span>
+        <span
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <button
+            disabled={isCopyDisabled}
+            aria-disabled={isCopyDisabled}
+            onClick={updateClipboard}
+            style={{ width: "25%" }}
+          >
+            copy
+          </button>
+        </span>
       </section>
     );
+  };
+
+  const updateClipboard = (e: SyntheticEvent) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(`${state.lotSize}`);
   };
 
   const baseCurrencies = () => {
