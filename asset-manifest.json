@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/lot-size-calculator/static/css/main.57fe1b0f.css",
+    "main.js": "/lot-size-calculator/static/js/main.f3f6a705.js",
+    "static/js/787.f335528c.chunk.js": "/lot-size-calculator/static/js/787.f335528c.chunk.js",
+    "service-worker.js": "/lot-size-calculator/service-worker.js",
+    "index.html": "/lot-size-calculator/index.html",
+    "main.57fe1b0f.css.map": "/lot-size-calculator/static/css/main.57fe1b0f.css.map",
+    "main.f3f6a705.js.map": "/lot-size-calculator/static/js/main.f3f6a705.js.map",
+    "787.f335528c.chunk.js.map": "/lot-size-calculator/static/js/787.f335528c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.57fe1b0f.css",
+    "static/js/main.f3f6a705.js"
+  ]
+}
