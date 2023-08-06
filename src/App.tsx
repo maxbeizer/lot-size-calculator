@@ -160,6 +160,7 @@ function App(app: IApp) {
             step="0.01"
             min="0"
             value={state.accountBalance}
+            inputMode="decimal"
             onInput={(e) =>
               handleNumberInput(
                 e as React.ChangeEvent<HTMLInputElement>,
@@ -177,6 +178,7 @@ function App(app: IApp) {
             step="0.1"
             min="0"
             value={state.riskPercentage}
+            inputMode="decimal"
             onInput={(e) =>
               handleNumberInput(
                 e as React.ChangeEvent<HTMLInputElement>,
@@ -191,9 +193,9 @@ function App(app: IApp) {
           Stop Loss (pips)
           <input
             type="number"
-            step="0.01"
             min="0"
             value={state.stopLossPips}
+            inputMode="numeric"
             onInput={(e) =>
               handleNumberInput(
                 e as React.ChangeEvent<HTMLInputElement>,
