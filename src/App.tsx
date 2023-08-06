@@ -177,6 +177,7 @@ function App(app: IApp) {
             type="number"
             step="0.1"
             min="0"
+            max="100"
             value={state.riskPercentage}
             inputMode="decimal"
             onInput={(e) =>
