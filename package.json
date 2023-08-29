@@ -18,7 +18,7 @@
     "web-vitals": "^3.4.0",
     "workbox-background-sync": "^7.0.0",
     "workbox-broadcast-update": "^7.0.0",
-    "workbox-cacheable-response": "^6.5.4",
+    "workbox-cacheable-response": "^7.0.0",
     "workbox-core": "^7.0.0",
     "workbox-expiration": "^7.0.0",
     "workbox-google-analytics": "^7.0.0",
