@@ -15,5 +15,9 @@ jobs:
           node-version: '14.x'
       - name: Install dependencies
         run: npm install
+      - name: Pre-deploy
+        run: |
+          git config --global user.email "max.beizer@gmail.com"
+          git config --global user.name "max beizer"
       - name: Deploy
         run: npm run deploy
