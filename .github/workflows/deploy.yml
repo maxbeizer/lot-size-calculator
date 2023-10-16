@@ -17,8 +17,8 @@ jobs:
         run: npm install
       - name: Pre-deploy
         run: |
-          git config user.email github-actions@github.com
-          git config user.name github-actions
+          git config user.email "max.beizer@gmail.com"
+          git config user.name "max beizer"
           git remote set-url origin https://maxbeizer:${{ secrets.GITHUB_TOKEN }}@github.com/maxbeizer/lot-size-calculator.git
           npm run predeploy
       - name: Deploy
