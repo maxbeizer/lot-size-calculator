@@ -19,6 +19,7 @@ jobs:
         run: |
           git config user.email github-actions@github.com
           git config user.name github-actions
+          git remote set-url origin https://maxbeizer:${{ secrets.GITHUB_TOKEN }}@github.com/maxbeizer/lot-size-calculator.git
           npm run predeploy
       - name: Deploy
         run: git push origin HEAD:gh-pages --force
