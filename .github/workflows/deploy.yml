@@ -17,8 +17,8 @@ jobs:
         run: npm install
       - name: Pre-deploy
         run: |
-          git config --global user.email "max.beizer@gmail.com"
-          git config --global user.name "max beizer"
+          git config user.email github-actions@github.com
+          git config user.name github-actions
           npm run predeploy
       - name: Deploy
         run: git push origin HEAD:gh-pages --force
