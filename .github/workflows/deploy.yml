@@ -19,5 +19,6 @@ jobs:
         run: |
           git config --global user.email "max.beizer@gmail.com"
           git config --global user.name "max beizer"
+          npm run predeploy
       - name: Deploy
-        run: npm run deploy
+        run: git push origin HEAD:gh-pages --force
