@@ -1,34 +1,5 @@
 name: Deploy
 
-# on:
-#   push:
-#     branches:
-#       - main
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: '14.x'
-#       - name: Install dependencies
-#         run: npm install
-#       - name: Pre-deploy
-#         run: |
-#           git config user.email "max.beizer@gmail.com"
-#           git config user.name "max beizer"
-#           git remote set-url origin https://maxbeizer:${{ secrets.GITHUB_TOKEN }}@github.com/maxbeizer/lot-size-calculator.git
-#           npm run predeploy
-#       - name: Deploy
-#         run: git push origin HEAD:gh-pages --force
-# Sample workflow for building and deploying a Next.js site to GitHub Pages
-#
-# To get started with Next.js see: https://nextjs.org/docs/getting-started
-#
-# name: Deploy Next.js site to Pages
-
 on:
   # Runs on pushes targeting the default branch
   push:
@@ -43,8 +14,9 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# Allow only one concurrent deployment, skipping runs queued between the run
+# in-progress and latest queued. However, do NOT cancel in-progress runs as we
+# want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -80,28 +52,10 @@ jobs:
           cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Setup Pages
         uses: actions/configure-pages@v3
-        # with:
-        #   # Automatically inject basePath in your Next.js configuration file and disable
-        #   # server side image optimization (https://nextjs.org/docs/api-reference/next/image#unoptimized).
-        #   #
-        #   # You may remove this line if you want to manage the configuration yourself.
-        #   static_site_generator: next
-      # - name: Restore cache
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: |
-      #       .next/cache
-      #     # Generate a new cache whenever packages or source files change.
-      #     key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-      #     # If source files changed but packages didn't, rebuild from a prior cache.
-      #     restore-keys: |
-      #       ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }} --force
       - name: Build app
         run: ${{ steps.detect-package-manager.outputs.manager }} run predeploy
-      # - name: Static HTML export with Next.js
-      #   run: ${{ steps.detect-package-manager.outputs.runner }} next export
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
