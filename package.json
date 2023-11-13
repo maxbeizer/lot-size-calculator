@@ -5,7 +5,7 @@
   "homepage": "https://maxbeizer.github.io/lot-size-calculator",
   "dependencies": {
     "@testing-library/jest-dom": "^6.1.4",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/react": "^14.1.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/node": "^20.9.0",
     "@types/react": "^18.2.36",
