@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/lot-size-calculator/static/css/main.30eca057.css",
-    "main.js": "/lot-size-calculator/static/js/main.be3ff956.js",
-    "static/js/787.f335528c.chunk.js": "/lot-size-calculator/static/js/787.f335528c.chunk.js",
+    "main.js": "/lot-size-calculator/static/js/main.b9d161b4.js",
+    "static/js/496.d98a0a7c.chunk.js": "/lot-size-calculator/static/js/496.d98a0a7c.chunk.js",
     "service-worker.js": "/lot-size-calculator/service-worker.js",
     "index.html": "/lot-size-calculator/index.html",
     "main.30eca057.css.map": "/lot-size-calculator/static/css/main.30eca057.css.map",
-    "main.be3ff956.js.map": "/lot-size-calculator/static/js/main.be3ff956.js.map",
-    "787.f335528c.chunk.js.map": "/lot-size-calculator/static/js/787.f335528c.chunk.js.map"
+    "main.b9d161b4.js.map": "/lot-size-calculator/static/js/main.b9d161b4.js.map",
+    "496.d98a0a7c.chunk.js.map": "/lot-size-calculator/static/js/496.d98a0a7c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.30eca057.css",
-    "static/js/main.be3ff956.js"
+    "static/js/main.b9d161b4.js"
   ]
 }
